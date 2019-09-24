@@ -1,0 +1,13 @@
+var N = null;var sourcesIndex = {};
+sourcesIndex["approx"] = {"name":"","files":["lib.rs","macros.rs"]};
+sourcesIndex["cgmath"] = {"name":"","files":["angle.rs","conv.rs","euler.rs","lib.rs","macros.rs","matrix.rs","num.rs","point.rs","prelude.rs","projection.rs","quaternion.rs","rotation.rs","structure.rs","transform.rs","vector.rs"]};
+sourcesIndex["colored"] = {"name":"","files":["color.rs","control.rs","lib.rs","style.rs"]};
+sourcesIndex["lazy_static"] = {"name":"","files":["inline_lazy.rs","lib.rs"]};
+sourcesIndex["libc"] = {"name":"","dirs":[{"name":"unix","dirs":[{"name":"linux_like","dirs":[{"name":"linux","dirs":[{"name":"gnu","dirs":[{"name":"b64","dirs":[{"name":"x86_64","files":["mod.rs","not_x32.rs"]}],"files":["mod.rs"]}],"files":["align.rs","mod.rs"]}],"files":["align.rs","mod.rs"]}],"files":["mod.rs"]}],"files":["align.rs","mod.rs"]}],"files":["fixed_width_ints.rs","lib.rs","macros.rs"]};
+sourcesIndex["num_traits"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["rand"] = {"name":"","dirs":[{"name":"distributions","files":["exponential.rs","gamma.rs","mod.rs","normal.rs","range.rs","ziggurat_tables.rs"]},{"name":"prng","files":["chacha.rs","isaac.rs","isaac64.rs","mod.rs","xorshift.rs"]}],"files":["jitter.rs","lib.rs","os.rs","rand_impls.rs","read.rs","reseeding.rs","seq.rs"]};
+sourcesIndex["rgb"] = {"name":"","dirs":[{"name":"internal","dirs":[{"name":"convert","files":["array.rs","mod.rs","tuple.rs"]}],"files":["ops.rs","pixel.rs","rgb.rs","rgba.rs"]}],"files":["alt.rs","lib.rs"]};
+sourcesIndex["source_error"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["winapi"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["winconsole"] = {"name":"","files":["lib.rs"]};
+createSourceSidebar();

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Error","An `Error` type targetting errors tied to source file contents"]]});
