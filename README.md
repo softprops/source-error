@@ -52,8 +52,8 @@ fn main() {
         "{}",
         Error::new(
             "whoopsie!",
-            "../tests/source.json",
-            include_str!("../tests/source.json").lines(),
+            "path/to/some/file.json",
+            include_str!("path/to/some/file.json").lines(),
             (3, 4)
         )
     )
