@@ -1,12 +1,8 @@
-error: something is definitely wrong here
+⚠️ error: something is definitely wrong here
 
---> ../tests/expect.txt
-
-  1 | {
-  2 | "foo": {
-  3 |   "bar": "baz",
-> 4 |  "boom": {
-  5 |     "zoom": true
-  6 |  }
-  7 | }
-  8 | }
+at ../tests/source.json:3:4
+   0 |{
+   1 |  "foo": {
+>  2 |    "bar": "baz",
+   3 |    "boom": {
+   4 |      "zoom": true
