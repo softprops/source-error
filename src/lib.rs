@@ -75,7 +75,7 @@ impl<'a> fmt::Display for Error<'a> {
         writeln!(f, "⚠️ {}\n", format!("error: {}", message).red())?;
         writeln!(
             f,
-            "{}",
+            "   {}\n",
             format!("at {}:{}:{}", path.display(), line, col).dimmed()
         )?;
         let lines = src

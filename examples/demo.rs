@@ -7,7 +7,7 @@ fn main() {
             "whoopsie!",
             "../tests/source.json",
             include_str!("../tests/source.json").lines(),
-            (0, 0)
+            (3, 4)
         )
     )
 }
