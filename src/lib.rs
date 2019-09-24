@@ -139,7 +139,6 @@ mod tests {
             include_str!("../tests/source.json").lines(),
             (3, 4),
         );
-        println!("{}", err);
         assert_eq!(format!("{}", err), expected)
     }
 
