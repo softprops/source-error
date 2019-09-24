@@ -1,8 +1,8 @@
 ⚠️ error: something is definitely wrong here
 
 at ../tests/source.json:3:4
-   0 |{
-   1 |  "foo": {
->  2 |    "bar": "baz",
-   3 |    "boom": {
-   4 |      "zoom": true
+   1 |{
+   2 |  "foo": {
+>  3 |    "bar": "baz",
+   4 |    "boom": {
+   5 |      "zoom": true
