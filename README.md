@@ -6,7 +6,7 @@
 </h1>
 
 <p align="center">
-   an magical type for displaying source file errors
+   a magical type for displaying source file errors
 </p>
 
 <div align="center">
