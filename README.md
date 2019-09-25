@@ -44,6 +44,8 @@ source-error = "0.1"
 
 ## 🤸 usage
 
+> 🚧 Interfaces are not yet finalized and are subject to change
+
 This crate is intended as a visual reporting diagnostic for tools which operate on text sources.
 
 The `source_error::Error` type provides a helpful [`Display`](https://doc.rust-lang.org/std/fmt/trait.Display.html) and can be used on in any [`Error`](https://doc.rust-lang.org/std/error/trait.Error.html) context
