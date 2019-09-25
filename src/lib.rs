@@ -183,13 +183,29 @@ mod tests {
     use std::env;
 
     #[test]
-    fn it_impl_error() {
+    fn impl_error() {
         fn is<E>(_: E)
         where
             E: StdError,
         {
         }
         is(from_lines("..", "...", "", Position::new(1, 1)))
+    }
+
+    #[test]
+    fn impl_custom_debug() {
+        assert_eq!(
+            format!(
+                "{:?}",
+                from_lines(
+                    "error occurs here",
+                    "path/to/file.txt",
+                    ":)",
+                    Position::new(1, 1)
+                )
+            ),
+            "Error { message: \"error occurs here\", path: \"path/to/file.txt\", position: Position { line: 1, col: 1 } }"
+        )
     }
 
     #[test]
