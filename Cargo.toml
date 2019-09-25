@@ -5,6 +5,7 @@ authors = ["softprops <d.tangren@gmail.com>"]
 edition = "2018"
 description = "A magical type for displaying source file errors"
 license = "MIT"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
