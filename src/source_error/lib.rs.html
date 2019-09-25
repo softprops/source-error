@@ -202,19 +202,37 @@
 <span id="202">202</span>
 <span id="203">203</span>
 <span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! A magical type for displaying source file errors</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # example</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! use source_error::from_file;</span>
+<span class="doccomment">//! use source_error::{from_file, Position};</span>
 <span class="doccomment">//! use std::error::Error;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {</span>
 <span class="doccomment">//!     println!(</span>
 <span class="doccomment">//!       &quot;{}&quot;,</span>
-<span class="doccomment">//!       from_file(&quot;whoopsie!&quot;, &quot;tests/source.json&quot;, (3, 4))?</span>
+<span class="doccomment">//!       from_file(&quot;whoopsie!&quot;, &quot;tests/source.json&quot;, Position::new(3, 4))?</span>
 <span class="doccomment">//!     );</span>
 <span class="doccomment">//!     Ok(())</span>
 <span class="doccomment">//! }</span>
@@ -227,6 +245,24 @@
     <span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>},
 };
 
+<span class="doccomment">/// Line and column coordinates</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Position</span> {
+    <span class="ident">line</span>: <span class="ident">usize</span>,
+    <span class="ident">col</span>: <span class="ident">usize</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Position</span> {
+    <span class="doccomment">/// Return&#39;s a new `Position` given a line and column number</span>
+    <span class="doccomment">/// These should be 1-based</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
+        <span class="ident">line</span>: <span class="ident">usize</span>,
+        <span class="ident">col</span>: <span class="ident">usize</span>,
+    ) <span class="op">-&gt;</span> <span class="ident">Position</span> {
+        <span class="ident">Position</span> { <span class="ident">line</span>, <span class="ident">col</span> }
+    }
+}
+
 <span class="doccomment">/// An `Error` type targetting errors tied to source file contents</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Most of the utility of this type is in its implementation of `Display` which</span>
@@ -235,7 +271,7 @@
     <span class="ident">message</span>: <span class="ident">String</span>,
     <span class="ident">path</span>: <span class="ident">PathBuf</span>,
     <span class="ident">lines</span>: <span class="ident">S</span>,
-    <span class="ident">position</span>: (<span class="ident">usize</span>, <span class="ident">usize</span>),
+    <span class="ident">position</span>: <span class="ident">Position</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
@@ -259,7 +295,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_file</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">P</span><span class="op">&gt;</span>(
     <span class="ident">message</span>: <span class="ident">M</span>,
     <span class="ident">path</span>: <span class="ident">P</span>,
-    <span class="ident">position</span>: (<span class="ident">usize</span>, <span class="ident">usize</span>),
+    <span class="ident">position</span>: <span class="ident">Position</span>,
 ) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>,
@@ -282,7 +318,7 @@
     <span class="ident">message</span>: <span class="ident">M</span>,
     <span class="ident">path</span>: <span class="ident">P</span>,
     <span class="ident">lines</span>: <span class="ident">S</span>,
-    <span class="ident">position</span>: (<span class="ident">usize</span>, <span class="ident">usize</span>),
+    <span class="ident">position</span>: <span class="ident">Position</span>,
 ) <span class="op">-&gt;</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">M</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
@@ -319,7 +355,7 @@
             <span class="ident">lines</span>,
             <span class="ident">position</span>,
         } <span class="op">=</span> <span class="self">self</span>;
-        <span class="kw">let</span> (<span class="ident">line</span>, <span class="ident">col</span>) <span class="op">=</span> <span class="ident">position</span>;
+        <span class="kw">let</span> <span class="ident">Position</span> { <span class="ident">line</span>, <span class="ident">col</span> } <span class="op">=</span> <span class="ident">position</span>;
         <span class="kw">let</span> <span class="ident">line_range</span> <span class="op">=</span> <span class="ident">line_range</span>(<span class="kw-2">*</span><span class="ident">line</span>);
         <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;⚠️ {}\n&quot;</span>, <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;error: {}&quot;</span>, <span class="ident">message</span>).<span class="ident">red</span>())<span class="question-mark">?</span>;
         <span class="macro">writeln</span><span class="macro">!</span>(
@@ -376,7 +412,7 @@
             <span class="ident">E</span>: <span class="ident">StdError</span>,
         {
         }
-        <span class="ident">is</span>(<span class="ident">from_lines</span>(<span class="string">&quot;..&quot;</span>, <span class="string">&quot;...&quot;</span>, <span class="string">&quot;&quot;</span>, (<span class="number">0</span>, <span class="number">0</span>)))
+        <span class="ident">is</span>(<span class="ident">from_lines</span>(<span class="string">&quot;..&quot;</span>, <span class="string">&quot;...&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="ident">Position</span>::<span class="ident">new</span>(<span class="number">1</span>, <span class="number">1</span>)))
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -387,7 +423,7 @@
             <span class="string">&quot;something is definitely wrong here&quot;</span>,
             <span class="string">&quot;../tests/source.json&quot;</span>,
             <span class="macro">include_str</span><span class="macro">!</span>(<span class="string">&quot;../tests/source.json&quot;</span>),
-            (<span class="number">3</span>, <span class="number">4</span>),
+            <span class="ident">Position</span>::<span class="ident">new</span>(<span class="number">3</span>, <span class="number">4</span>),
         );
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">err</span>), <span class="ident">expected</span>)
     }
