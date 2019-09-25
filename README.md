@@ -58,7 +58,6 @@ fn main() -> Result<(), Box<dyn Error>> {
         from_file(
             "whoopsie!",
             "path/to/some/file.json",
-            include_str!("path/to/some/file.json").lines(),
             (3, 4)
         )?
     );
