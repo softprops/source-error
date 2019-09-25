@@ -1,12 +1,2 @@
 var ALIASES = {};
-ALIASES["approx"] = {};
-ALIASES["cgmath"] = {};
-ALIASES["colored"] = {};
-ALIASES["lazy_static"] = {};
-ALIASES["libc"] = {};
-ALIASES["num_traits"] = {};
-ALIASES["rand"] = {};
-ALIASES["rgb"] = {};
 ALIASES["source_error"] = {};
-ALIASES["winapi"] = {};
-ALIASES["winconsole"] = {};
