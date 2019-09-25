@@ -1,65 +1,109 @@
-//! a magical type for displaying source file errors
+//! A magical type for displaying source file errors
 //!
 //! # example
 //!
 //! ```rust
-//! //todo
+//! use source_error::from_file;
+//! use std::error::Error;
+//!
+//! fn main() -> Result<(), Box<dyn Error>> {
+//!     println!(
+//!       "{}",
+//!       from_file("whoopsie!", "tests/source.json", (3, 4))?
+//!     );
+//!     Ok(())
+//! }
 //! ```
 use colored::Colorize;
 use std::{
     error::Error as StdError,
-    fmt,
+    fmt, io,
     ops::RangeInclusive,
     path::{Path, PathBuf},
-    str::Lines,
 };
 
 /// An `Error` type targetting errors tied to source file contents
 ///
 /// Most of the utility of this type is in its implementation of `Display` which
 /// renders the error next along with the relative line of code
-#[derive(Debug)]
-pub struct Error<'a> {
+pub struct Error<S> {
     message: String,
     path: PathBuf,
-    src: Lines<'a>,
+    lines: S,
     position: (usize, usize),
 }
 
-impl<'a> Error<'a> {
-    /// Creates an `Error` with a message, path to file a
-    /// nd src lines along with the relative position of the error
-    ///
-    /// Positions are 1 based to align with what people see in their
-    /// source file editors
-    pub fn new<M, P>(
-        message: M,
-        path: P,
-        src: Lines<'a>,
-        position: (usize, usize),
-    ) -> Self
-    where
-        M: AsRef<str>,
-        P: AsRef<Path>,
-    {
-        Error {
-            message: message.as_ref().into(),
-            path: path.as_ref().into(),
-            src,
-            position,
-        }
+impl<S> fmt::Debug for Error<S> {
+    fn fmt(
+        &self,
+        f: &mut fmt::Formatter<'_>,
+    ) -> fmt::Result {
+        f.debug_struct("Error")
+            .field("message", &self.message)
+            .field("path", &self.path.display())
+            .field("position", &self.position)
+            .finish()
+    }
+}
+
+/// Creates an `Error` with a message and path to source file a
+/// along with the relative position of the error
+///
+/// Positions should be  1-based to align with what people see in their
+/// source file editors
+pub fn from_file<M, P>(
+    message: M,
+    path: P,
+    position: (usize, usize),
+) -> io::Result<Error<String>>
+where
+    P: AsRef<Path>,
+    M: AsRef<str>,
+{
+    Ok(from_lines(
+        message,
+        path.as_ref(),
+        std::fs::read_to_string(path.as_ref())?,
+        position,
+    ))
+}
+
+/// Creates an `Error` with a message, path to source file a
+/// and source lines along with the relative position of the error
+///
+/// Positions are 1 based to align with what people see in their
+/// source file editors
+pub fn from_lines<M, P, S>(
+    message: M,
+    path: P,
+    lines: S,
+    position: (usize, usize),
+) -> Error<S>
+where
+    M: AsRef<str>,
+    P: AsRef<Path>,
+    S: AsRef<str>,
+{
+    Error {
+        message: message.as_ref().into(),
+        path: path.as_ref().into(),
+        lines,
+        position,
     }
 }
 
 fn line_range(line: usize) -> RangeInclusive<usize> {
-    line.checked_sub(2).unwrap_or_default()..=line.checked_add(2).unwrap_or_else(|| std::usize::MAX)
+    line.checked_sub(2).unwrap_or_default()..=line.checked_add(2).unwrap_or(std::usize::MAX)
 }
 
 /// Creates a colorized display of error information
 ///
 /// You can disable color by exporting the `NO_COLOR` environment variable
 /// to anything but "0"
-impl<'a> fmt::Display for Error<'a> {
+impl<S> fmt::Display for Error<S>
+where
+    S: AsRef<str>,
+{
     fn fmt(
         &self,
         f: &mut fmt::Formatter<'_>,
@@ -67,7 +111,7 @@ impl<'a> fmt::Display for Error<'a> {
         let Self {
             message,
             path,
-            src,
+            lines,
             position,
         } = self;
         let (line, col) = position;
@@ -78,8 +122,9 @@ impl<'a> fmt::Display for Error<'a> {
             "   {}\n",
             format!("at {}:{}:{}", path.display(), line, col).dimmed()
         )?;
-        let lines = src
-            .clone()
+        let lines = lines
+            .as_ref()
+            .lines()
             .enumerate()
             .filter_map(|(idx, line)| {
                 let line_idx = idx + 1;
@@ -111,7 +156,7 @@ impl<'a> fmt::Display for Error<'a> {
     }
 }
 
-impl<'a> StdError for Error<'a> {}
+impl<S> StdError for Error<S> where S: AsRef<str> {}
 
 #[cfg(test)]
 mod tests {
@@ -126,17 +171,17 @@ mod tests {
             E: StdError,
         {
         }
-        is(Error::new("..", "...", "".lines(), (0, 0)))
+        is(from_lines("..", "...", "", (0, 0)))
     }
 
     #[test]
     fn it_works() {
         env::set_var("NO_COLOR", "");
         let expected = include_str!("../tests/expect.txt");
-        let err = Error::new(
+        let err = from_lines(
             "something is definitely wrong here",
             "../tests/source.json",
-            include_str!("../tests/source.json").lines(),
+            include_str!("../tests/source.json"),
             (3, 4),
         );
         assert_eq!(format!("{}", err), expected)

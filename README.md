@@ -45,18 +45,20 @@ This crate is intended as a visual reporting diagnostic for tools which operate 
 The `source_error::Error` type provides a helpful [`Display`](https://doc.rust-lang.org/std/fmt/trait.Display.html) and can be used on in any [`Error`](https://doc.rust-lang.org/std/error/trait.Error.html) context
 
 ```rust
-use source_error::Error;
+use source_error::from_file;
+use std::error::Error;
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     println!(
         "{}",
-        Error::new(
+        from_file(
             "whoopsie!",
             "path/to/some/file.json",
             include_str!("path/to/some/file.json").lines(),
             (3, 4)
-        )
-    )
+        )?
+    );
+    Ok(())
 }
 ```
 
