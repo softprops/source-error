@@ -220,6 +220,22 @@
 <span id="220">220</span>
 <span id="221">221</span>
 <span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! A magical type for displaying source file errors</span>
 <span class="doccomment">//!</span>
@@ -406,13 +422,29 @@
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">it_impl_error</span>() {
+    <span class="kw">fn</span> <span class="ident">impl_error</span>() {
         <span class="kw">fn</span> <span class="ident">is</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="kw">_</span>: <span class="ident">E</span>)
         <span class="kw">where</span>
             <span class="ident">E</span>: <span class="ident">StdError</span>,
         {
         }
         <span class="ident">is</span>(<span class="ident">from_lines</span>(<span class="string">&quot;..&quot;</span>, <span class="string">&quot;...&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="ident">Position</span>::<span class="ident">new</span>(<span class="number">1</span>, <span class="number">1</span>)))
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">impl_custom_debug</span>() {
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="macro">format</span><span class="macro">!</span>(
+                <span class="string">&quot;{:?}&quot;</span>,
+                <span class="ident">from_lines</span>(
+                    <span class="string">&quot;error occurs here&quot;</span>,
+                    <span class="string">&quot;path/to/file.txt&quot;</span>,
+                    <span class="string">&quot;:)&quot;</span>,
+                    <span class="ident">Position</span>::<span class="ident">new</span>(<span class="number">1</span>, <span class="number">1</span>)
+                )
+            ),
+            <span class="string">&quot;Error { message: \&quot;error occurs here\&quot;, path: \&quot;path/to/file.txt\&quot;, position: Position { line: 1, col: 1 } }&quot;</span>
+        )
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
