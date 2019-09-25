@@ -6,6 +6,9 @@ edition = "2018"
 description = "A magical type for displaying source file errors"
 license = "MIT"
 readme = "README.md"
+documentation = "https://docs.rs/source-error"
+homepage = "https://github.com/softprops/source-error"
+repository = "https://github.com/softprops/source-error"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
