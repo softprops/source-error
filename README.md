@@ -9,6 +9,8 @@
    a magical type for displaying source file errors
 </p>
 
+<img align="center" src="example.png"/>
+
 <div align="center">
   <a href="https://github.com/softprops/source-error/actions">
     <img src="https://github.com/softprops/source-error/workflows/Main/badge.svg"/>
