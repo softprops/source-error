@@ -9,7 +9,9 @@
    a magical type for displaying source file errors
 </p>
 
-<img align="center" src="example.png"/>
+<div align="center">
+  <img src="example.png"/>
+</div>
 
 <div align="center">
   <a href="https://github.com/softprops/source-error/actions">
