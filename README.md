@@ -51,7 +51,7 @@ This crate is intended as a visual reporting diagnostic for tools which operate 
 The `source_error::Error` type provides a helpful [`Display`](https://doc.rust-lang.org/std/fmt/trait.Display.html) and can be used on in any [`Error`](https://doc.rust-lang.org/std/error/trait.Error.html) context
 
 ```rust
-use source_error::from_file;
+use source_error::{from_file, Position};
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -60,7 +60,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         from_file(
             "whoopsie!",
             "path/to/some/file.json",
-            (3, 4)
+            Position::new(3, 4)
         )?
     );
     Ok(())

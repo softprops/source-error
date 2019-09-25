@@ -3,13 +3,13 @@
 //! # example
 //!
 //! ```rust
-//! use source_error::from_file;
+//! use source_error::{from_file, Position};
 //! use std::error::Error;
 //!
 //! fn main() -> Result<(), Box<dyn Error>> {
 //!     println!(
 //!       "{}",
-//!       from_file("whoopsie!", "tests/source.json", (3, 4))?
+//!       from_file("whoopsie!", "tests/source.json", Position::new(3, 4))?
 //!     );
 //!     Ok(())
 //! }
@@ -22,6 +22,24 @@ use std::{
     path::{Path, PathBuf},
 };
 
+/// Line and column coordinates
+#[derive(Debug)]
+pub struct Position {
+    line: usize,
+    col: usize,
+}
+
+impl Position {
+    /// Return's a new `Position` given a line and column number
+    /// These should be 1-based
+    pub fn new(
+        line: usize,
+        col: usize,
+    ) -> Position {
+        Position { line, col }
+    }
+}
+
 /// An `Error` type targetting errors tied to source file contents
 ///
 /// Most of the utility of this type is in its implementation of `Display` which
@@ -30,7 +48,7 @@ pub struct Error<S> {
     message: String,
     path: PathBuf,
     lines: S,
-    position: (usize, usize),
+    position: Position,
 }
 
 impl<S> fmt::Debug for Error<S> {
@@ -54,7 +72,7 @@ impl<S> fmt::Debug for Error<S> {
 pub fn from_file<M, P>(
     message: M,
     path: P,
-    position: (usize, usize),
+    position: Position,
 ) -> io::Result<Error<String>>
 where
     P: AsRef<Path>,
@@ -77,7 +95,7 @@ pub fn from_lines<M, P, S>(
     message: M,
     path: P,
     lines: S,
-    position: (usize, usize),
+    position: Position,
 ) -> Error<S>
 where
     M: AsRef<str>,
@@ -114,7 +132,7 @@ where
             lines,
             position,
         } = self;
-        let (line, col) = position;
+        let Position { line, col } = position;
         let line_range = line_range(*line);
         writeln!(f, "⚠️ {}\n", format!("error: {}", message).red())?;
         writeln!(
@@ -171,7 +189,7 @@ mod tests {
             E: StdError,
         {
         }
-        is(from_lines("..", "...", "", (0, 0)))
+        is(from_lines("..", "...", "", Position::new(1, 1)))
     }
 
     #[test]
@@ -182,7 +200,7 @@ mod tests {
             "something is definitely wrong here",
             "../tests/source.json",
             include_str!("../tests/source.json"),
-            (3, 4),
+            Position::new(3, 4),
         );
         assert_eq!(format!("{}", err), expected)
     }
