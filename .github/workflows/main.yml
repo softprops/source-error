@@ -58,7 +58,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Generate Docs
         shell: bash
-        run: cargo doc && echo "<meta http-equiv=refresh content=0;url=`echo ${{ github.repository  }} | cut -d / -f 2`/index.html>" > target/doc/index.html
+        run: cargo doc && echo "<meta http-equiv=refresh content=0;url=`echo ${{ github.repository  }} | cut -d / -f 2 | tr '-' '_'`/index.html>" > target/doc/index.html
       - name: Publish
         if: github.ref == 'refs/heads/master'
         uses: docker://peaceiris/gh-pages:v2.3.1
